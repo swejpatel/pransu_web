@@ -1,33 +1,30 @@
 import { Router, Request, Response } from 'express';
 import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import pool from '../db/database';
 import { authenticate, AuthRequest } from '../middleware/auth';
 
 const router = Router();
 
-const UPLOAD_DIR = path.join(__dirname, '../../../uploads');
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
-  filename: (_req, file, cb) => {
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${unique}${path.extname(file.originalname)}`);
-  },
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'pransu_web',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'gif', 'webp'],
+  } as any,
 });
 
 const upload = multer({
   storage,
   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
-  fileFilter: (_req, file, cb) => {
-    const allowed = /jpeg|jpg|png|gif|webp/;
-    const ext = path.extname(file.originalname).toLowerCase();
-    if (allowed.test(ext)) cb(null, true);
-    else cb(new Error('Only image files allowed'));
-  },
 });
 
 // GET all photos (public - visible only)
@@ -80,7 +77,7 @@ router.post('/', authenticate, upload.single('photo'), async (req: AuthRequest, 
       INSERT INTO photos (filename, original_name, title, description, category_id, file_size, is_hero, is_featured, is_gallery, is_visible)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [
-      req.file.filename,
+      req.file.path,
       req.file.originalname,
       title || '',
       description || '',
@@ -138,8 +135,8 @@ router.delete('/:id', authenticate, async (req: Request, res: Response): Promise
     
     if (!photo) { res.status(404).json({ error: 'Photo not found' }); return; }
 
-    const filePath = path.join(UPLOAD_DIR, photo.filename);
-    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    // Cloudinary deletion can be added here if needed in the future
+    // For now, we just remove the database record
     
     await pool.query('DELETE FROM photos WHERE id = ?', [id]);
     res.json({ message: 'Photo deleted' });
