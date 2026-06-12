@@ -323,10 +323,22 @@ body.dark-mode .navbar {
 }
 
 .masonry-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
+  column-count: 3;
+  column-gap: 2rem;
   padding: 0 2rem;
+}
+
+@media (max-width: 1024px) {
+  .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .masonry-grid {
+    column-count: 1;
+    padding: 0 1rem;
+  }
 }
 
 .gallery-item {
@@ -334,29 +346,20 @@ body.dark-mode .navbar {
   overflow: hidden;
   border-radius: 4px;
   cursor: pointer;
-  aspect-ratio: 3/4; /* default aspect */
+  margin-bottom: 2rem; /* Add margin instead of gap for columns */
+  display: inline-block; /* Prevent breaking across columns */
+  width: 100%;
 }
 
-.gallery-item.landscape {
-  aspect-ratio: 4/3;
-  grid-column: span 2;
-}
-
+.gallery-item.landscape,
 .gallery-item.portrait {
-  aspect-ratio: 2/3;
-  grid-row: span 2;
-}
-
-@media (max-width: 768px) {
-  .gallery-item.landscape {
-    grid-column: span 1;
-  }
+  /* Remove aspect ratios, let the image natural height dictate it */
 }
 
 .gallery-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  display: block;
   transition: transform var(--transition-slow);
 }
 
