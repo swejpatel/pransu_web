@@ -9,7 +9,7 @@
             "root": "backend",
             "entrypoint": "src/index.ts",
             "routePrefix": "/_/backend",
-            "framework": "express"
+            "builder": "@vercel/node"
         }
     }
 }
