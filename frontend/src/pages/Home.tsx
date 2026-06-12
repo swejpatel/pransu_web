@@ -73,7 +73,10 @@ const Home: React.FC = () => {
                 const imgSrc = img.startsWith('http') ? img : `/uploads/${img}`;
                 return (
                   <div key={`${pIdx}-${iIdx}`} className={`hero-slide ${isActive ? 'active' : ''}`} style={{ transition: 'opacity 0.7s ease-in-out' }}>
-                    <img src={imgSrc} alt={proj.title} className="hero-bg" style={{ transition: isActive ? 'transform 8s ease-out' : 'none' }} />
+                    {/* Blurred background layer to fill empty screen space on mobile */}
+                    <img src={imgSrc} alt="" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(30px)', opacity: 0.6, transform: 'scale(1.1)' }} />
+                    {/* Main image (uncropped on mobile, cover on desktop) */}
+                    <img src={imgSrc} alt={proj.title} className="hero-bg" style={{ position: 'relative', width: '100%', height: '100%', zIndex: 2, transition: isActive ? 'transform 8s ease-out' : 'none' }} />
                   </div>
                 );
               })
