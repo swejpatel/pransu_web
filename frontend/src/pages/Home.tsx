@@ -57,7 +57,7 @@ const Home: React.FC = () => {
   }, [projects, activeProjectIdx]);
 
   const activeProject = projects[activeProjectIdx];
-  const activeImage = activeProject?.images?.[activeImageIdx] || activeProject?.images?.[0]; // fallback to main if thumb is missing
+  // const activeImage = activeProject?.images?.[activeImageIdx] || activeProject?.images?.[0]; // fallback to main if thumb is missing
 
   return (
     <div style={{ paddingTop: 'var(--nav-height)' }}>

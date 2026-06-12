@@ -57,7 +57,7 @@ const Gallery: React.FC = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string>(categorySlug || 'all');
+  const [, setActiveCategory] = useState<string>(categorySlug || 'all');
   const [globalTick, setGlobalTick] = useState(0);
 
   useEffect(() => {
