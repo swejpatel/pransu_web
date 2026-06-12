@@ -798,6 +798,10 @@ body.dark-mode .navbar {
     padding: 0.6rem 1.5rem !important;
     font-size: 0.8rem !important;
   }
+
+  .hero-bg {
+    object-fit: contain !important;
+  }
   
   .hero-thumbs-container {
     height: 15vh !important; /* give more space to main image on mobile */
