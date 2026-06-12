@@ -34,6 +34,16 @@ app.use('/api/settings', settingsRoutes);
 // Health check
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
 
+app.get('/api/debug-db', (req, res) => {
+  res.json({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password_length: process.env.DB_PASSWORD ? process.env.DB_PASSWORD.length : 0,
+    db_name: process.env.DB_NAME
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
