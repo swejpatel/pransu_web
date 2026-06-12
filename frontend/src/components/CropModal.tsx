@@ -39,9 +39,9 @@ const CropModal: React.FC<CropModalProps> = ({ imageSrc, onCrop, onCancel, aspec
       backgroundColor: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex',
       alignItems: 'center', justifyContent: 'center', padding: '1rem'
     }}>
-      <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '8px', maxWidth: '900px', width: '100%', display: 'flex', flexDirection: 'column', maxHeight: '95vh' }}>
+      <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '8px', maxWidth: '900px', width: '100%', display: 'flex', flexDirection: 'column', maxHeight: '95vh', overflow: 'hidden' }}>
         <h3 style={{ marginBottom: '1rem', color: '#333' }}>Crop Your Image</h3>
-        <div style={{ flex: 1, minHeight: '300px', width: '100%', marginBottom: '1.5rem' }}>
+        <div style={{ flex: 1, minHeight: 0, height: '60vh', width: '100%', marginBottom: '1.5rem', overflow: 'hidden' }}>
           <Cropper
             src={imageSrc}
             style={{ height: '100%', width: '100%' }}
